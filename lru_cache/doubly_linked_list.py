@@ -3,8 +3,9 @@ as well as its next node in the List."""
 
 
 class ListNode:
-    def __init__(self, value, prev=None, next=None):
+    def __init__(self, key, value, prev=None, next=None):
         self.value = value
+        self.key = key
         self.prev = prev
         self.next = next
 
@@ -55,8 +56,8 @@ class DoublyLinkedList:
     as the new head of the list. Don't forget to handle
     the old head node's previous pointer accordingly."""
 
-    def add_to_head(self, value):
-        new_node = ListNode(value, None, None)
+    def add_to_head(self, key, value):
+        new_node = ListNode(key, value, None, None)
         self.length += 1
         if not self.head and not self.tail:
             self.head = new_node
@@ -79,8 +80,8 @@ class DoublyLinkedList:
     as the new tail of the list. Don't forget to handle
     the old tail node's next pointer accordingly."""
 
-    def add_to_tail(self, value):
-        new_node = ListNode(value, None, None)
+    def add_to_tail(self, key, value):
+        new_node = ListNode(key, value, None, None)
         self.length += 1
         if not self.head and not self.tail:
             self.head = new_node
@@ -106,8 +107,9 @@ class DoublyLinkedList:
         if node is self.head:
             return
         value = node.value
+        key = node.key
         self.delete(node)
-        self.add_to_head(value)
+        self.add_to_head(key, value)
 
     """Removes the input node from its current spot in the
     List and inserts it as the new tail node of the List."""
@@ -116,8 +118,9 @@ class DoublyLinkedList:
         if node is self.tail:
             return
         value = node.value
+        key = node.key
         self.delete(node)
-        self.add_to_tail(value)
+        self.add_to_tail(key, value)
 
     """Removes a node from the list and handles cases where
     the node was the head or the tail"""

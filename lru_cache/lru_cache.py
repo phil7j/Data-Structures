@@ -13,7 +13,7 @@ class LRUCache:
     def __init__(self, limit=10):
         self.max = limit
         self.storage = DoublyLinkedList()
-        self.size = DoublyLinkedList().length
+        self.size = self.storage.length
         self.storage_dict = {}
 
     """
@@ -23,15 +23,17 @@ class LRUCache:
     Returns the value associated with the key or None if the
     key-value pair doesn't exist in the cache.
     """
+# I think I need to remove a node or key:value pair here
 
     def get(self, key):
-        # check if exists
-        if self.storage_dict.get(key) == None:
-            return None
-        # set node to be the head
-        self.storage.move_to_front(self.storage_dict.get(key))
+        # print("---DICTIONARY---", self.storage_dict)
+        if self.storage_dict.get(key) != None:
+            # set node to be the head
+            self.storage.move_to_front(self.storage_dict.get(key))
         # return its value
-        return self.storage_dict.get(key).value
+            return self.storage_dict.get(key).value
+        else:
+            return None
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -46,18 +48,24 @@ class LRUCache:
 
     def set(self, key, value):
         # if above limit, delete from end of list
-        if self.size > limit:
-            self.storage.remove_from_tail()
+        # print("\n---DICTIONARY---", self.storage_dict)
+        # if self.storage.tail:
+        #     print("TAIL", self.storage.tail.key)
+
         # if key already exists, override (delete old node and make new)
         if key in self.storage_dict:
             # removes from linked list
             self.storage.delete(self.storage_dict[key])
             # adds new node to head of linked-list
-            self.storage.add_to_head(value)
+            self.storage.add_to_head(key, value)
             # update dictionary with new value for key
             self.storage_dict[key] = self.storage.head
         else:
+            if self.storage.length >= self.max:
+                # delete key from dict
+                del self.storage_dict[self.storage.tail.key]
+                self.storage.remove_from_tail()
             # Add new item to head of linked-list
-            self.storage.add_to_head(value)
-            # Add key and value to storage_dict
+            self.storage.add_to_head(key, value)
+        # Add key and value to storage_dict
             self.storage_dict[key] = self.storage.head
