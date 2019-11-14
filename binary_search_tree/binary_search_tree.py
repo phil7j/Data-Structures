@@ -76,7 +76,7 @@ class BinarySearchTree:
         current = self
 
         while current.right:
-        # Do Stuff
+        # Keep going right
             if current.right == None:
                 return current.value
             else:
@@ -90,7 +90,11 @@ class BinarySearchTree:
         # go left until you can't anymore, then
         # go back and go right
         # in here somewhere, you want to call cb(node)
-        pass
+        cb(self.value)
+        if self.left:
+            self.left.for_each(cb)
+        if self.right:
+            self.right.for_each(cb)
 
     # DAY 2 Project -----------------------
 
